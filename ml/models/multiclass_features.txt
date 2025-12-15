@@ -1,0 +1,1 @@
+Height_cm\nBP_Systolic\nBP_Diastolic\nCholesterol\nGlucose\nSmoking\nFamily_History\nheart_risk\ndiabetes_risk\nhypertension_risk\nBMI_obese\nBMI_overweight\nBP_high\nBP_ratio\nChol_high\nGlucose_high\nAge_senior\nAge_middle\nSmoking_Age\nSymptoms_encoded
