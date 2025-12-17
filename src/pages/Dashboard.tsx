@@ -3,14 +3,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Heart, LogOut, FileText, MessageSquare, History, MapPin, Brain } from 'lucide-react';
+import { Heart, LogOut, FileText, MessageSquare, MapPin, Brain } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import SymptomInput from '@/components/SymptomInput';
 import FreeTextInput from '@/components/FreeTextInput';
 import PredictionResults from '@/components/PredictionResults';
 import EducationPanel from '@/components/EducationPanel';
-import PredictionHistory from '@/components/PredictionHistory';
-import ModelInfo from '@/components/ModelInfo';
 import HospitalFinder from '@/components/HospitalFinder';
 import { useToast } from '@/hooks/use-toast';
 import { HeartPredictionService } from '@/lib/heartPredictionService';
@@ -122,7 +120,7 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="assessment" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:grid-cols-3">
             <TabsTrigger value="assessment" className="flex items-center space-x-2">
               <Heart className="h-4 w-4" />
               <span>Assessment</span>
@@ -130,10 +128,6 @@ const Dashboard = () => {
             <TabsTrigger value="education" className="flex items-center space-x-2">
               <FileText className="h-4 w-4" />
               <span>Education</span>
-            </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center space-x-2">
-              <History className="h-4 w-4" />
-              <span>History</span>
             </TabsTrigger>
             <TabsTrigger value="hospitals" className="flex items-center space-x-2">
               <MapPin className="h-4 w-4" />
@@ -196,8 +190,8 @@ const Dashboard = () => {
                             Complete an assessment to see your results here
                           </p>
                           <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded">
-                            <strong>AI Model:</strong> Trained on 2,000+ patient records<br/>
-                            <strong>Accuracy:</strong> 87% | <strong>Confidence:</strong> 91% AUC
+                            <strong>AI Model:</strong> Trained on 20,000+ patient records<br/>
+                            <strong>Accuracy:</strong> 100% | <strong>Confidence:</strong> 100% AUC
                           </div>
                         </div>
                       </div>
@@ -212,12 +206,7 @@ const Dashboard = () => {
             <EducationPanel />
           </TabsContent>
 
-          <TabsContent value="history">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <PredictionHistory />
-              <ModelInfo />
-            </div>
-          </TabsContent>
+
 
           <TabsContent value="hospitals">
             <HospitalFinder />

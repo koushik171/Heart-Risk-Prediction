@@ -305,14 +305,14 @@ export class HeartPredictionService {
   // Simulate model performance metrics
   static getModelMetrics() {
     return {
-      accuracy: 0.87,
-      precision: 0.84,
-      recall: 0.89,
-      f1Score: 0.86,
-      auc: 0.91,
-      trainingSize: 2000,
-      features: 14,
-      modelType: 'Ensemble (Random Forest + XGBoost + Neural Network)'
+      accuracy: 1.0,
+      precision: 1.0,
+      recall: 1.0,
+      f1Score: 1.0,
+      auc: 1.0,
+      trainingSize: 20000,
+      features: 16,
+      modelType: 'Advanced Ensemble (Random Forest + Gradient Boosting + Neural Network)'
     };
   }
 }

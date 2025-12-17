@@ -57,6 +57,7 @@ const HospitalFinder = () => {
   const [location, setLocation] = useState('');
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [loading, setLoading] = useState(false);
+  const [userCoords, setUserCoords] = useState<{lat: number, lng: number} | null>(null);
 
   const getCurrentLocation = () => {
     setLoading(true);
@@ -64,13 +65,18 @@ const HospitalFinder = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+          setUserCoords({ lat: latitude, lng: longitude });
           setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
-          setHospitals(mockHospitals);
+          // Filter hospitals within 100km range
+          const nearbyHospitals = mockHospitals.filter(hospital => hospital.distance <= 100);
+          setHospitals(nearbyHospitals);
           setLoading(false);
         },
         () => {
           setLocation('Current Location');
-          setHospitals(mockHospitals);
+          // Filter hospitals within 100km range
+          const nearbyHospitals = mockHospitals.filter(hospital => hospital.distance <= 100);
+          setHospitals(nearbyHospitals);
           setLoading(false);
         }
       );
@@ -90,9 +96,32 @@ const HospitalFinder = () => {
   };
 
   const handleGetDirections = (hospital: Hospital) => {
-    // Open maps with directions
-    const query = encodeURIComponent(hospital.address);
-    window.open(`https://maps.google.com/?q=${query}`, '_blank');
+    // Get real directions from user location to hospital
+    if (userCoords) {
+      // Use Google Maps directions with proper routing
+      const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${encodeURIComponent(hospital.address)}&travelmode=driving`;
+      window.open(directionsUrl, '_blank');
+    } else {
+      // Try to get current location first, then redirect
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=${encodeURIComponent(hospital.address)}&travelmode=driving`;
+            window.open(directionsUrl, '_blank');
+          },
+          () => {
+            // Fallback to hospital location only
+            const query = encodeURIComponent(hospital.address);
+            window.open(`https://maps.google.com/?q=${query}`, '_blank');
+          }
+        );
+      } else {
+        // Fallback to hospital location only
+        const query = encodeURIComponent(hospital.address);
+        window.open(`https://maps.google.com/?q=${query}`, '_blank');
+      }
+    }
   };
 
   const handleCall = (phone: string) => {
@@ -131,7 +160,7 @@ const HospitalFinder = () => {
               className="w-full"
             >
               <MapPin className="h-4 w-4 mr-2" />
-              {loading ? 'Getting Location...' : 'Use My Current Location'}
+              {loading ? 'Getting Location...' : userCoords ? 'Location Found ✓' : 'Use My Current Location'}
             </Button>
           </div>
         </CardContent>
